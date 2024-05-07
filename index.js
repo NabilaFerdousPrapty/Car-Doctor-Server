@@ -71,6 +71,23 @@ async function run() {
         const bookings=await cursor.toArray();
         res.send(bookings);
     });
+    app.delete('/bookings/:id',async (req,res)=>{
+      const id=req.params.id;
+      const query={_id: new ObjectId(id)};
+      const result=await bookingsCollection.deleteOne(query);
+      res.json(result);
+    });
+    app.patch('/bookings/:id',async (req,res)=>{
+      const id=req.params.id;
+      const query={_id: new ObjectId(id)};
+      const updatedBooking=req.body;
+      console.log(updatedBooking);
+      const updateDoc={
+        $set:updatedBooking,
+      };
+      const result=await bookingsCollection.updateOne(query,updateDoc);
+      res.json(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
