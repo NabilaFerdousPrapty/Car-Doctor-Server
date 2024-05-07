@@ -60,6 +60,17 @@ async function run() {
         const result=await bookingsCollection.insertOne(booking);
         res.json(result);
     });
+    app.get('/bookings', async (req, res) => {
+      let query={};
+        let cursor= bookingsCollection.find(query);
+        if(req.query.email){
+          query.email=req.query.email;
+          cursor=bookingsCollection.find(query);
+        }
+        
+        const bookings=await cursor.toArray();
+        res.send(bookings);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
