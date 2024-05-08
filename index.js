@@ -12,9 +12,8 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
 }));
-
-app.use(express.json());
 app.use(cookieParser());
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('car doctor is running!');
@@ -109,8 +108,8 @@ async function run() {
       res
       .cookie('token',token,{
         httpOnly:true,
-        secure:false,
-        sameSite:'none'
+        secure:process.env.NODE_ENV==='production',
+        sameSite:process.env.NODE_ENV==='production'?'none':'strict',
       
       })
       .send({success:true});
